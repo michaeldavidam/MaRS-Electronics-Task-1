@@ -4,33 +4,36 @@ void setup()
 {
   Serial.begin(9600);
 
+  // motor control pins
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
 
+  // enable pins (for motor driver)
   pinMode(6, OUTPUT);
   pinMode(7, OUTPUT);
-
-
 }
 
 void loop()
 {
-  //if (Serial.available())
+  if (Serial.available())      // read only if data available (avoids garbage values)
+  {
     command = Serial.read();
+  }
 
-
+  // enabling motor driver
   digitalWrite(6, HIGH);  
   digitalWrite(7, HIGH);  
+
+  // movement control based on input
   if (command == 'W')  // Forward
   {
-    
     digitalWrite(2, HIGH);
     digitalWrite(3, LOW);
     digitalWrite(4, HIGH);
     digitalWrite(5, LOW);
-    Serial.print("W\n");
+    Serial.print("Forward\n");
   }
 
   else if (command == 'S')  // Reverse
@@ -57,7 +60,7 @@ void loop()
     digitalWrite(5, HIGH);
   }
 
-  else  // Stop
+  else  // Stop if no valid command
   {
     digitalWrite(2, LOW);
     digitalWrite(3, LOW);
